@@ -1,0 +1,42 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="container">
+    <table class="table table-bordered">
+  <thead class="table-dark">
+    <tr>
+        <th>Имя</th>
+        <th>Фамилие</th>
+        <th>Организация</th>
+        <th>Номер телефона</th>
+        <th>Номер организации</th>
+        <th>Кол-во заказов</th>
+        <th>Статус</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for client in clients %}
+    <tr>
+        <td><a href="{% url 'client_detail' client.id %}">{{ client.first_name }}</a></td>
+        <td>{{ client.last_name }}</td>
+        <td>{{ client.organization }}</td>
+        <td>{{ client.phone }}</td>
+        <td>{{ client.org_phone }}</td>
+        <td>{{ client.amount_orders }}</td>
+        <td>{{ client.status }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+
+{% endblock content %}

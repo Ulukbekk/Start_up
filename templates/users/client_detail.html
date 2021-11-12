@@ -1,0 +1,33 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/order_detail.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="container-order-detail">
+    <table class="table table-bordered">
+      {% for client in clients %}
+      <ul>
+        <li>Имя:{{ client.first_name}}</li>
+        <li>Фамилие:{{ client.last_name }}</li>
+        <li>Организация:{{ client.organization}}</li>
+        <li>Номер тел:{{ client.phone }}</li>
+        <li>Номер орг.:{{ client.org_phone }}</li>
+        <li>Статус:{{ client.status }}</li>
+        <li>Кол-во заказов:{{ client.amount_orders }}</li>
+        <br>
+        <a id="edit" class="edit" href="{% url 'client_edit' client.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
+      </ul>
+
+      {% endfor %}
+
+    </table>
+</div>
+
+
+{% endblock content %}

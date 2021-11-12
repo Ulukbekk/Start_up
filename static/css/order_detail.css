@@ -1,0 +1,14 @@
+.container-order-detail{
+    width: 400px;
+    height: 800px;
+    margin: 6% 30%
+}
+
+li{
+    margin-top: 30px;
+}
+
+#edit {
+    color: white;
+    text-decoration: none;
+}

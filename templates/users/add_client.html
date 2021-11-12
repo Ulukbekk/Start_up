@@ -1,0 +1,24 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/user_blank.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+<br>
+<div class="container-blank">
+    <div class="row">
+        <div class="col-lg-10">
+            <form method="post">
+                {% csrf_token %}
+                <label>{{ form|crispy }}</label>
+                <br>
+                <br>
+                <button class="btn btn-success" type="submit">Добавить клиента</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

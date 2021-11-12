@@ -1,0 +1,85 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="container">
+    <table class="table table-bordered">
+  <thead class="table-dark">
+    <tr>
+        <th>Менеджер</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Закачик</th>
+        <th>Дедлайн</th>
+        <th>Статус</th>
+        <th>Состояние</th>
+        <th>Цена</th>
+        <th>Дата Создания</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for order in status_orders %}
+    <tr>
+        <td>{{ order.author }}</td>
+        <td><a href="{% url 'order_detail' order.id %}">{{ order.title }}</a></td>
+        <td><p>{{ order.description|wordwrap:50}}</p></td>
+        <td>{{ order.client }}</td>
+        <td>{{ order.deadline }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.condition }}</td>
+        <td>{{ order.price }}</td>
+        <td>{{ order.date_created|date:"d.m.Y - G:i" }}</td>
+    </tr>
+  {% endfor %}
+  {% for order in condition_orders %}
+    <tr>
+        <td>{{ order.author }}</td>
+        <td><a href="{% url 'order_detail' order.id %}">{{ order.title }}</a></td>
+        <td><p>{{ order.description|wordwrap:50}}</p></td>
+        <td>{{ order.client }}</td>
+        <td>{{ order.deadline }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.condition }}</td>
+        <td>{{ order.price }}</td>
+        <td>{{ order.date_created|date:"d.m.Y - G:i" }}</td>
+    </tr>
+  {% endfor %}
+  {% for order in worker_orders %}
+    <tr>
+        <td>{{ order.author }}</td>
+        <td><a href="{% url 'order_detail' order.id %}">{{ order.title }}</a></td>
+        <td><p>{{ order.description|wordwrap:50}}</p></td>
+        <td>{{ order.client }}</td>
+        <td>{{ order.deadline }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.condition }}</td>
+        <td>{{ order.price }}</td>
+        <td>{{ order.date_created|date:"d.m.Y - G:i" }}</td>
+    </tr>
+  {% endfor %}
+    {% for order in type_orders %}
+    <tr>
+        <td>{{ order.author }}</td>
+        <td><a href="{% url 'order_detail' order.id %}">{{ order.title }}</a></td>
+        <td><p>{{ order.description|wordwrap:50}}</p></td>
+        <td>{{ order.client }}</td>
+        <td>{{ order.deadline }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.condition }}</td>
+        <td>{{ order.price }}</td>
+        <td>{{ order.date_created|date:"d.m.Y - G:i" }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+
+{% endblock content %}

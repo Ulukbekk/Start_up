@@ -1,0 +1,34 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/order_detail.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="container-order-detail">
+    <table class="table table-bordered">
+      {% for order in orders %}
+      <ul>
+        <li>Файлы:{{ order.files}}</li>
+        <li>Название:{{ order.title }}</li>
+        <li>Описание:{{ order.description|wordwrap:5 }}</li>
+        <li>Заказчик:{{ order.client }}</li>
+        <li>Дедлайн:{{ order.deadline|date:"d.m.Y" }}</li>
+        <li>Статус:{{ order.status }}</li>
+        <li>Дата создания:{{ order.date_created|date:"d.m.Y - G:i" }}</li>
+        <li>Состояние:{{ order.condition }}</li>
+        <br>
+        <a id="edit" class="edit" href="{% url 'worker_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
+      </ul>
+
+      {% endfor %}
+
+    </table>
+</div>
+
+
+{% endblock content %}

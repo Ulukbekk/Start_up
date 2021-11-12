@@ -1,0 +1,38 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/user_blank.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+<br>
+<div class="container-blank">
+    <div class="row">
+        <div class="col-lg-10">
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+<!--                <input type="file" multiple name="files[]">-->
+<!--                <br>-->
+<!--                <input type="text" name="title" placeholder="Название">-->
+<!--                <input type="text" name="description" placeholder="Описание">-->
+<!--                <input type="date" name="deadline" placeholder="Дедлайн">-->
+<!--                <div id="div_id_client" class="form-group"> <label for="id_client" class="">-->
+<!--                Client-->
+<!--            </label> <div class=""> <select name="client" class="select form-control" id="id_client"> <option value="" selected="">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+<!--</select> </div> </div>-->
+<!--                <input type="text" name="status" placeholder="Статус">-->
+<!--                <input type="number" name="price" placeholder="Цена">-->
+<!--                <input type="text" name="order" placeholder="Тип заказа">-->
+<!--                <input type="text" name="condition" placeholder="Состояние">-->
+<!--                <input type="text" name="work" placeholder="Отправить">-->
+                <label >{{ form|crispy }}</label>
+                <br>
+                <br>
+                <button class="btn btn-success" type="submit">Добавить Заказ</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
