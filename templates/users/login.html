@@ -14,8 +14,9 @@
                 {% csrf_token %}
                 <label>{{ form|crispy }}</label>
                 <br>
-                <a href="{% url 'registration' %}" class="nav-link px-2 text-blue"><p>Registration</p></a>
-                <br>
+                {% if user.is_staff %}
+           <p><a href="registration" class="nav-link px-2 text-white">Новый пользователь</a></p>
+            {% endif %}
                 <button class="btn btn-success" type="submit">Login</button>
             </form>
         </div>

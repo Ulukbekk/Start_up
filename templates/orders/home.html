@@ -14,6 +14,7 @@
     <table class="table table-bordered">
   <thead class="table-dark">
     <tr>
+        <th>№</th>
         <th>Менеджер</th>
         <th>Название</th>
         <th>Клиент</th>
@@ -28,6 +29,7 @@
   <tbody>
   {% for order in orders %}
     <tr>
+        <td>{{ order.id }}</td>
         <td>{{ order.author }}</td>
         <td><a href="{% url 'order_detail' order.id %}">{{ order.title }}</a></td>
         <td>{{ order.client }}</td>
@@ -44,9 +46,9 @@
 </div>
  <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-        {% if cars.has_previous %}
+        {% if orders.has_previous %}
             <li class="page-item">
-            <a class="page-link" href="?page={{ cars.previous_page_number }}">Previous</a>
+            <a class="page-link" href="?page={{ orders.previous_page_number }}">Previous</a>
           </li>
         {% else %}
             <li class="page-item disabled">
@@ -54,30 +56,30 @@
           </li>
         {% endif %}
 
-        {% if cars.number|add:'-4' > 1 %}
+        {% if orders.number|add:'-4' > 1 %}
             <li class="page-item"><a class="page-link" href="?page={{ cars.number|add:'-5' }}">&hellip;</a></li>
         {% endif %}
 
-        {% for i in cars.paginator.page_range %}
-            {% if cars.number == i %}
+        {% for i in orders.paginator.page_range %}
+            {% if orders.number == i %}
                 <li class="page-item active" aria-current="page">
               <span class="page-link">
                 {{ i }}
                 <span class="sr-only">(current)</span>
               </span>
             </li>
-            {% elif i > cars.number|add:'-5' and i < cars.number|add:'5' %}
+            {% elif i > orders.number|add:'-5' and i < orders.number|add:'5' %}
                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
             {% endif %}
         {% endfor %}
 
-        {% if cars.paginator.num_pages > cars.number|add:'4' %}
-           <li class="page-item"><a class="page-link" href="?page={{ cars.number|add:'5' }}">&hellip;</a></li>
+        {% if orders.paginator.num_pages > cars.number|add:'4' %}
+           <li class="page-item"><a class="page-link" href="?page={{ orders.number|add:'5' }}">&hellip;</a></li>
         {% endif %}
 
-        {% if cars.has_next %}
+        {% if orders.has_next %}
             <li class="page-item">
-            <a class="page-link" href="?page={{ cars.next_page_number }}">Next</a>
+            <a class="page-link" href="?page={{ orders.next_page_number }}">Next</a>
           </li>
         {% else %}
             <li class="page-item disabled">

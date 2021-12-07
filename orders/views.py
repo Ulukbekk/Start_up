@@ -2,6 +2,7 @@ import os
 from audioop import reverse
 
 from django.core.files.storage import FileSystemStorage
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse, Http404, FileResponse
 from django.shortcuts import render, redirect
@@ -15,7 +16,6 @@ from users.models import Account, Client
 
 
 def home_page(request):
-
     s_status = Status.objects.all().distinct()
     s_type_order = Order.objects.all().distinct()
     s_worker = Worker.objects.all().distinct()
@@ -23,10 +23,16 @@ def home_page(request):
     work = Worker.objects.filter(worker=request.user.position)
     position = request.user.position
 
-    orders = ManagerBlank.objects.filter(Q(author=request.user) | Q(worker__in=work)).order_by('-date_created').distinct()
-    print(work)
+    if str(position) == 'Менеджер':
+        orders = ManagerBlank.objects.filter().order_by('-date_created').distinct()
+    else:
+        orders = ManagerBlank.objects.filter(worker__in=work).order_by('-date_created').distinct()
+
+    paginator = Paginator(orders, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'orders': orders,
+        'orders': page_obj,
         's_type_order': s_type_order,
         's_status': s_status,
         's_worker': s_worker,
@@ -216,19 +222,9 @@ def download(request, path):
             return response
     raise Http404
 
-# def download_file(request):
-#     # fill these variables with real values
-#     fl_path = os.path.join(settings.MEDIA_ROOT, path)
-#     filename = ‘downloaded_file_name.extension’
-#
-#     fl = open(fl_path, 'r’)
-#     mime_type, _ = mimetypes.guess_type(fl_path)
-#     response = HttpResponse(fl, content_type=mime_type)
-#     response['Content-Disposition'] = "attachment; filename=%s" % filename
-#         return response
-#
-# def download_files(request, id):
-#     obj = ManagerBlank.objects.get(id=id)
-#     filename = obj.files.path
-#     response = FileResponse(open(filename, 'rb'))
-#     return response
+
+def search(request):
+    query = request.GET.get('q')
+    orders = ManagerBlank.objects.filter(title__icontains=query)
+    return render(request, 'orders/home.html',
+                  context={'orders': orders})

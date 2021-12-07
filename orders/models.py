@@ -1,10 +1,11 @@
 from django.db import models
 
+from orders.validators import validate_file_extension
 from users.models import Account, Client
 
 
 class Status(models.Model):
-    status = models.CharField(max_length=20)
+    status = models.CharField(max_length=20, )
 
     def __str__(self):
         return self.status
@@ -32,25 +33,25 @@ class Order(models.Model):
 
 
 class ManagerBlank(models.Model):
-    files = models.FileField(upload_to='files/', blank=True, null=True)
+    files = models.FileField(upload_to='files/%Y/%m/%d', validators=[validate_file_extension], blank=True, null=True)
     title = models.CharField(max_length=50)
     description = models.TextField()
     client = models.ForeignKey(Client, on_delete=models.SET_NULL,
                                blank=True, null=True)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL,
-                                 blank=True, null=True,)
+                               null=True, blank=True, default=[0])
     price = models.FloatField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    deadline = models.DateTimeField()
+    deadline = models.DateTimeField(blank=True, null=True)
     author = models.ForeignKey(Account, on_delete=models.SET_NULL,
                                blank=True, null=True)
     condition = models.ForeignKey(Condition, on_delete=models.SET_NULL,
-                                 blank=True, null=True)
+                                  blank=True, null=True, default=[1])
     worker = models.ForeignKey(Worker, on_delete=models.SET_NULL,
-                                 blank=True, null=True)
+                               blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL,
-                                 blank=True, null=True)
+                              blank=True, null=True)
     print = models.BooleanField(default=False)
     design = models.BooleanField(default=False)
     machine = models.BooleanField(default=False)

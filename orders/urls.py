@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from orders.views import order_detail, order_edit, home_page, status_sort, worker_sort, condition_sort, \
-    order_sort, worker_edit, add_order, worker_detail
+    order_sort, worker_edit, add_order, worker_detail, search
 
 urlpatterns = [
     # path('complete-order/<int:pk>/', complete_order, name='complete_order'),
@@ -15,6 +15,7 @@ urlpatterns = [
     path('status-sort/<int:pk>/', status_sort, name='status_sort'),
     path('order-sort/<int:pk>/', order_sort, name='order_sort'),
     path('add-order/', add_order, name='add_order'),
+    path('search/', search, name='search'),
     # path('upload/', files, name='upload'),
     # path('download/', download, name='downlaod'),
     # path('download_file/<int:pk>/', download_files, name='download_file'),

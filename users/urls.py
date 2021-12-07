@@ -1,7 +1,8 @@
+from django.conf.urls import url
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from users.views import register, add_client, list_clients, profile, client_detail, client_edit
+from users.views import register, add_client, list_clients, profile, client_detail, client_edit, change_password
 
 urlpatterns = [
     path('registration/', register, name='registration'),
@@ -16,4 +17,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(
         template_name='users/logout.html'
     ), name='logout'),
+    url(r'^password/$', change_password, name='change_password'),
 ]

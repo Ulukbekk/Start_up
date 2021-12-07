@@ -9,7 +9,7 @@ class PositionAdmin(admin.ModelAdmin):
 
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'position', 'phone']
+    list_display = ['username', 'first_name', 'position', 'phone']
 
 
 @admin.register(Client)
