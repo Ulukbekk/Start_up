@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1k5oe)rdfnv^y9=lsqwthhs+a@odx#idco1l*)pg4k917b)2$w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "startupkg.herokuapp.com"]
 
@@ -82,27 +82,27 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'ddspn7mgp7s16t',
-#         'USER': 'vqqzcjygpalhqo',
-#         'PASSWORD': '8098ed3c74599be0c0a20d9a4e8801a9411a144d2399ff00f474f4b5d7101c49',
-#         'HOST': 'ec2-107-23-213-65.compute-1.amazonaws.com',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'start_up',
-        'USER': 'tim',
-        'PASSWORD': '1007',
-        'HOST': '127.0.0.1',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ddspn7mgp7s16t',
+        'USER': 'vqqzcjygpalhqo',
+        'PASSWORD': '8098ed3c74599be0c0a20d9a4e8801a9411a144d2399ff00f474f4b5d7101c49',
+        'HOST': 'ec2-107-23-213-65.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'start_up',
+#         'USER': 'tim',
+#         'PASSWORD': '1007',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 # postgres://vqqzcjygpalhqo:8098ed3c74599be0c0a20d9a4e8801a9411a144d2399ff00f474f4b5d7101c49@ec2-107-23-213-65.compute-1.amazonaws.com:5432/ddspn7mgp7s16t
 # Password validation
