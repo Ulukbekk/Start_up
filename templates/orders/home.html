@@ -15,7 +15,6 @@
   <thead class="table-dark">
     <tr>
         <th>№</th>
-        <th>Менеджер</th>
         <th>Название</th>
         <th>Клиент</th>
         <th>Дедлайн</th>
@@ -24,13 +23,14 @@
         <th>Состояние</th>
         <th>Сечас на</th>
         <th>Тип заказа</th>
+        <th>Менеджер</th>
+
     </tr>
   </thead>
   <tbody>
   {% for order in orders %}
     <tr>
         <td>{{ order.id }}</td>
-        <td>{{ order.author }}</td>
         <td><a href="{% url 'order_detail' order.id %}">{{ order.title }}</a></td>
         <td>{{ order.client }}</td>
         <td>{{ order.deadline|date:"d.m.Y - G:i" }}</td>
@@ -39,6 +39,8 @@
         <td>{{ order.condition }}</td>
         <td>{{ order.worker }}</td>
         <td>{{ order.order }}</td>
+        <td>{{ order.author }}</td>
+
     </tr>
   {% endfor %}
   </tbody>
