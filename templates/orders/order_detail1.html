@@ -27,7 +27,7 @@
         {% elif order.worker != 'Менеджер' %}
         <a href="{% url 'worker_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
         {% endif %}
-        <a  href="{{ order.files.url }}" download="{{ order.files.url }}"><button class="btn btn-success" type="submit">Скачать файл</button></a>
+        <a  href="{{ MEDIA_URL }}{{ order.files.url }}" download="{{ order.files.url }}"><button class="btn btn-success" type="submit">Скачать файл</button></a>
       </ul>
       {% endfor %}
     </table>
