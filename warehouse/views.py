@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 
 from warehouse.forms import AddMaterialForm, AddCategoryForm, MaterialSearchForm, UpdateMaterialForm
 from warehouse.models import Category, Material
-import pywhatkit as kit
 
 
 def all_materials(request):
