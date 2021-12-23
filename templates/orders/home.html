@@ -4,12 +4,19 @@
 
 {% block styles %}
 <link href="{% static 'css/form.css' %}" rel="stylesheet">
+<link href="{% static 'css/filter.css' %}" rel="stylesheet">
+<link href="{% static 'css/nav.css' %}" rel="stylesheet">
+<link href="{% static 'css/all_materials.css' %}" rel="stylesheet">
 {% endblock styles %}
 
 {% block content %}
 
 <br>
-<br>
+<div class="container-filter">
+    <form method='POST' action=''>{% csrf_token %}
+    {{ order_form|crispy}}
+        <input type="submit" value='Search'/>
+</form></div>
 <div class="container col-8">
     <table class="table table-bordered">
   <thead class="table-dark">
@@ -59,7 +66,7 @@
         {% endif %}
 
         {% if orders.number|add:'-4' > 1 %}
-            <li class="page-item"><a class="page-link" href="?page={{ cars.number|add:'-5' }}">&hellip;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ orders.number|add:'-5' }}">&hellip;</a></li>
         {% endif %}
 
         {% for i in orders.paginator.page_range %}
@@ -75,7 +82,7 @@
             {% endif %}
         {% endfor %}
 
-        {% if orders.paginator.num_pages > cars.number|add:'4' %}
+        {% if orders.paginator.num_pages > orders.number|add:'4' %}
            <li class="page-item"><a class="page-link" href="?page={{ orders.number|add:'5' }}">&hellip;</a></li>
         {% endif %}
 

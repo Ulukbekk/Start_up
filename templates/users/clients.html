@@ -4,11 +4,18 @@
 
 {% block styles %}
 <link href="{% static 'css/form.css' %}" rel="stylesheet">
+<link href="{% static 'css/client_filter.css' %}" rel="stylesheet">
 {% endblock styles %}
 
 {% block content %}
 
-
+<br>
+<div class="container-client-filter">
+        <form method='POST' action=''>{% csrf_token %}
+    {{form|crispy}}
+        <input type="submit" value='Search'/>
+</form>
+</div>
 <div class="container">
     <table class="table table-bordered">
   <thead class="table-dark">

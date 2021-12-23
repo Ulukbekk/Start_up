@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from orders.views import order_detail, order_edit, home_page, status_sort, worker_sort, condition_sort, \
-    order_sort, worker_edit, add_order, worker_detail, search
+from orders.views import order_detail, order_edit, home_page, worker_edit, add_order, worker_detail, search
 
 urlpatterns = [
     # path('complete-order/<int:pk>/', complete_order, name='complete_order'),
@@ -10,10 +9,10 @@ urlpatterns = [
     path('worker-detail/<int:pk>/', worker_detail, name='worker_detail'),
     path('order-edit/<int:pk>/', order_edit, name='order_edit'),
     path('worker-edit/<int:pk>/', worker_edit, name='worker_edit'),
-    path('condition-sort/<int:pk>/', condition_sort, name='condition_sort'),
-    path('worker-sort/<int:pk>/', worker_sort, name='worker_sort'),
-    path('status-sort/<int:pk>/', status_sort, name='status_sort'),
-    path('order-sort/<int:pk>/', order_sort, name='order_sort'),
+    # path('condition-sort/<int:pk>/', condition_sort, name='condition_sort'),
+    # path('worker-sort/<int:pk>/', worker_sort, name='worker_sort'),
+    # path('status-sort/<int:pk>/', status_sort, name='status_sort'),
+    # path('order-sort/<int:pk>/', order_sort, name='order_sort'),
     path('add-order/', add_order, name='add_order'),
     path('search/', search, name='search'),
     # path('upload/', files, name='upload'),

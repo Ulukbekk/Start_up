@@ -7,7 +7,6 @@ from orders.models import ManagerBlank
 class ManagerBlankForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['status'].empty_label = "Обычный"
         self.fields['condition'].empty_label = "Не начато"
         self.fields['worker'].empty_label = "Не выбран"
         self.fields['order'].empty_label = "Не выбрано"
@@ -21,7 +20,7 @@ class ManagerBlankForm(forms.ModelForm):
             'description',
             'deadline',
             'client',
-            'status',
+            # 'status',
             'price',
             'order',
             'condition',
@@ -55,3 +54,12 @@ class WorkerBlankForm(forms.ModelForm):
             'design',
             'machine',
         )
+
+
+class OrderSearchForm(forms.ModelForm):
+    class Meta:
+        model = ManagerBlank
+
+        fields = ['id', 'title', 'client', 'author', 'status', 'condition', 'worker', 'order']
+
+        widgets = {'deadline': forms.DateInput(attrs={'id': 'davaToday', 'type': 'date'})}

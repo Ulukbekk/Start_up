@@ -1,7 +1,7 @@
 from django.contrib.auth import update_session_auth_hash, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
-from users.forms import UserRegistrationForm, AddClientForm, ProfileUpdateForm
+from users.forms import UserRegistrationForm, AddClientForm, ProfileUpdateForm, SearchClientForm
 from users.models import Account, Client
 
 
@@ -33,8 +33,20 @@ def add_client(request):
 
 def list_clients(request):
     clients = Client.objects.all()
+    form = SearchClientForm(request.POST or None)
+
+    if request.method == 'POST':
+        clients = Client.objects.filter(
+            first_name__icontains=form['category'].value(),
+            last_name__icontains=form['title'].value(),
+            organization__icontains=form['organization'].value(),
+            phone__icontains=form['color'].value(),
+            status__icontains=form['shade'].value()
+        )
+
     context = {
-        'clients': clients
+        'clients': clients,
+        'form': form
     }
     return render(request, 'users/clients.html', context)
 

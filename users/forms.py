@@ -31,6 +31,17 @@ class AddClientForm(forms.ModelForm):
                   )
 
 
+class SearchClientForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ('first_name',
+                  'last_name',
+                  'organization',
+                  'phone',
+                  'status',
+                  )
+
+
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Account

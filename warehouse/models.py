@@ -1,26 +1,8 @@
 from django.db import models
-from mptt.fields import TreeForeignKey
-from mptt.models import MPTTModel
 
 
-class Category(MPTTModel):
-    title = models.CharField(max_length=50, unique=True)
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-
-    class MPTTMeta:
-        order_insertion_by = ['title']
-
-    def __str__(self):
-        return self.title or ' '
-
-
-class SubCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL,
-                                 related_name='sub_category', blank=True, null=True)
-    title = models.CharField(max_length=50)
-
-    class MPTTMeta:
-        order_insertion_by = ['title']
+class Category(models.Model):
+    title = models.CharField(max_length=50, unique=True, verbose_name='Название категории')
 
     def __str__(self):
         return self.title
@@ -43,12 +25,21 @@ class Material(models.Model):
         ('Коричневый', 'Коричневый'),
     )
 
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL,
-                                    related_name='material_category', blank=True, null=True)
-    size = models.FloatField(default=0)
-    amount = models.IntegerField(default=0)
-    color = models.CharField(choices=COLOR_CHOICES, blank=True, null=True, max_length=20)
-    shade = models.CharField(max_length=10, default=0)
+    category_choice = (
+        ('Акрил', 'Акрил'),
+        ('Форекс', 'Форекс'),
+        ('Самоклеящаяся пленка.', 'Самоклеящаяся пленка.'),
+        ('Светодиоды', 'Светодиоды'),
+        ('Метал ', 'Метал'),
+        ('Другое', 'Другое'),
+    )
+    category = models.CharField(max_length=50, blank=True, null=True, choices=category_choice, verbose_name='Категория')
+    title = models.CharField(default=' ', max_length=100, blank=True, null=True)
+    remainder = models.FloatField(default=0, verbose_name='Остаток')
+    amount = models.IntegerField(default=0, verbose_name='Количество')
+    date_created = models.DateTimeField(auto_now_add=True)
+    color = models.CharField(choices=COLOR_CHOICES, blank=True, null=True, max_length=20, verbose_name='Цвет')
+    shade = models.CharField(max_length=10, verbose_name='Оттенок', blank=True, null=True)
 
     def __str__(self):
-        return self.category.__str__()
+        return self.title

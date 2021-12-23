@@ -10,76 +10,89 @@ from django.template import RequestContext
 from django.views.generic import FormView
 
 from core import settings
-from orders.forms import ManagerBlankForm, WorkerEditForm
-from orders.models import ManagerBlank, Status, Worker, Condition, Order, Order_file
+from orders.forms import ManagerBlankForm, WorkerEditForm, OrderSearchForm
+from orders.models import ManagerBlank
 from users.models import Account, Client
+from warehouse.forms import MaterialSearchForm
 
 
 def home_page(request):
-    s_status = Status.objects.all().distinct()
-    s_type_order = Order.objects.all().distinct()
-    s_worker = Worker.objects.all().distinct()
-    s_condition = Condition.objects.all().distinct()
-    work = Worker.objects.filter(worker=request.user.position)
+    # s_status = Status.objects.all().distinct()
+    # s_type_order = Order.objects.all().distinct()
+    # s_worker = Worker.objects.all().distinct()
+    # s_condition = Condition.objects.all().distinct()
     position = request.user.position
-
-    if str(position) == 'Менеджер':
-        orders = ManagerBlank.objects.filter().order_by('-date_created').distinct()
+    manage = Account.objects.filter(position='Менеджер')
+    order_form = OrderSearchForm(request.POST or None)
+    if str(position) == 'Менеджер' :
+        orders = ManagerBlank.objects.filter().order_by('-date_created')
     else:
-        orders = ManagerBlank.objects.filter(worker__in=work).order_by('-date_created').distinct()
+        orders = ManagerBlank.objects.filter(worker=position).order_by('-date_created')
+    if request.method == 'POST':
+        orders = ManagerBlank.objects.filter(
+            title__icontains=order_form['title'].value(),
+            status__icontains=order_form['status'].value(),
+            condition__icontains=order_form['condition'].value(),
+            worker__icontains=order_form['worker'].value(),
+            order__icontains=order_form['order'].value(),
+            # deadline__icontains=order_form['deadline'].value()
+        )
 
     paginator = Paginator(orders, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
     context = {
         'orders': page_obj,
-        's_type_order': s_type_order,
-        's_status': s_status,
-        's_worker': s_worker,
-        's_condition': s_condition,
-        'position': position
+        # 's_type_order': s_type_order,
+        # 's_status': s_status,
+        # 's_worker': s_worker,
+        # 's_condition': s_condition,
+        'position': position,
+        'manage': manage,
+        'order_form': order_form
     }
     return render(request, 'orders/home.html', context)
 
 
-def status_sort(request, pk):
-    status = Status.objects.filter(id=pk).first()
-    status_orders = ManagerBlank.objects.filter(status=status).order_by('-date_created')
-    context = {
-        'status_orders': status_orders,
-    }
-
-    return render(request, 'orders/sort.html', context)
-
-
-def worker_sort(request, pk):
-    worker = Worker.objects.filter(id=pk).first()
-    worker_orders = ManagerBlank.objects.filter(worker=worker).order_by('-date_created')
-    context = {
-        'worker_orders': worker_orders,
-    }
-
-    return render(request, 'orders/sort.html', context)
-
-
-def condition_sort(request, pk):
-    condition = Condition.objects.filter(id=pk).first()
-    condition_orders = ManagerBlank.objects.filter(condition=condition).order_by('-date_created')
-    context = {
-        'condition_orders': condition_orders,
-    }
-
-    return render(request, 'orders/sort.html', context)
-
-
-def order_sort(request, pk):
-    order = Order.objects.filter(id=pk).first()
-    type_orders = ManagerBlank.objects.filter(order=order).order_by('-date_created')
-    context = {
-        'type_orders': type_orders,
-    }
-
-    return render(request, 'orders/sort.html', context)
+# def status_sort(request, pk):
+#     status = Status.objects.filter(id=pk).first()
+#     status_orders = ManagerBlank.objects.filter(status=status).order_by('-date_created')
+#     context = {
+#         'status_orders': status_orders,
+#     }
+#
+#     return render(request, 'orders/sort.html', context)
+#
+#
+# def worker_sort(request, pk):
+#     worker = Worker.objects.filter(id=pk).first()
+#     worker_orders = ManagerBlank.objects.filter(worker=worker).order_by('-date_created')
+#     context = {
+#         'worker_orders': worker_orders,
+#     }
+#
+#     return render(request, 'orders/sort.html', context)
+#
+#
+# def condition_sort(request, pk):
+#     condition = Condition.objects.filter(id=pk).first()
+#     condition_orders = ManagerBlank.objects.filter(condition=condition).order_by('-date_created')
+#     context = {
+#         'condition_orders': condition_orders,
+#     }
+#
+#     return render(request, 'orders/sort.html', context)
+#
+#
+# def order_sort(request, pk):
+#     order = Order.objects.filter(id=pk).first()
+#     type_orders = ManagerBlank.objects.filter(order=order).order_by('-date_created')
+#     context = {
+#         'type_orders': type_orders,
+#     }
+#
+#     return render(request, 'orders/sort.html', context)
 
 
 def add_order(request):

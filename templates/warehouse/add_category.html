@@ -3,18 +3,20 @@
 {% load static %}
 
 {% block styles %}
-<link href="{% static 'css/login.css' %}" rel="stylesheet">
+<link href="{% static 'css/user_blank.css' %}" rel="stylesheet">
 {% endblock styles %}
 
 {% block content %}
-<div class="container-login">
+<br>
+<div class="container-blank">
     <div class="row">
         <div class="col-lg-10">
             <form method="post">
                 {% csrf_token %}
                 <label>{{ form|crispy }}</label>
                 <br>
-                <button class="btn btn-success" type="submit">Login</button>
+                <br>
+                <button class="btn btn-success" type="submit">Добавить</button>
             </form>
         </div>
     </div>

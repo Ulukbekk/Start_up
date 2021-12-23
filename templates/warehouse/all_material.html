@@ -1,0 +1,96 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/form.css' %}" rel="stylesheet">
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+<link href="{% static 'css/material_filter.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+<br>
+<div class="container-material-filter">
+        <form method='POST' action=''>{% csrf_token %}
+    {{form|crispy}}
+        <input type="submit" value='Search'/>
+</form>
+</div>
+<div class="container col-8">
+
+    <table class="table table-bordered">
+  <thead class="table-dark">
+    <tr>
+        <th>№</th>
+        <th>Название</th>
+        <th>Цвет</th>
+        <th>Оттенок</th>
+        <th>Кол-во</th>
+        <th>Остаток</th>
+        <th>Дата</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for material in materials %}
+    <tr>
+        <td>{{ material.id }}</td>
+        <td><a href="{% url 'update_material' material.id %}">{{ material.title }}</a></td>
+        <td>{{ material.color }}</td>
+        <td>{{ material.shade }}</td>
+        <td>{{ material.amount }}</td>
+        <td>{{ material.remainder }}</td>
+        <td>{{ material.date_created|date:"d.m.Y - G:i" }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+ <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+        {% if materials.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ materials.previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+          </li>
+        {% endif %}
+
+        {% if materials.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ materials.number|add:'-5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in materials.paginator.page_range %}
+            {% if materials.number == i %}
+                <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+            {% elif i > materials.number|add:'-5' and i < materials.number|add:'5' %}
+                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if materials.paginator.num_pages > materials.number|add:'4' %}
+           <li class="page-item"><a class="page-link" href="?page={{ materials.number|add:'5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if materials.has_next %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ materials.next_page_number }}">Next</a>
+          </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+
+
+
+{% endblock content %}

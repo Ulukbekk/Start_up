@@ -7,6 +7,10 @@
           rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/filter.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/material_filter.css' %}">
+    <link href="{% static 'css/client_filter.css' %}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -32,19 +36,22 @@
             <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">{{ user.username }}</a></li>
             <li><a href="{% url 'home_page' %}" class="nav-link px-2 text-secondary">Home</a></li>
+            {% if user.position == 'Менеджер' %}
             <li><a href="{% url 'list_clients' %}" class="nav-link px-2 text-white">Список клиентов</a></li>
             <li><a href="{% url 'add_client' %}" class="nav-link px-2 text-white">Новый Клиент</a></li>
            <li><a href="{% url 'add_order' %}" class="nav-link px-2 text-white">Добавить Заказ</a></li>
+            {% endif %}
+           <li><a href="{% url 'add_material' %}" class="nav-link px-2 text-white">Добавить Материал</a></li>
+           <li><a href="{% url 'all_materials' %}" class="nav-link px-2 text-white">Учет Материалов</a></li>
+<!--           <li><a href="{% url 'stock' %}" class="nav-link px-2 text-white">Stock</a></li>-->
+<!--           <li><a href="{% url 'list_items' %}" class="nav-link px-2 text-white">List items</a></li>-->
+<!--           <li><a href="{% url 'add_items' %}" class="nav-link px-2 text-white">Add items</a></li>-->
 
             {% endif %}
         </ul>
-
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="get" action="{% url 'search' %}">
           <input type="search" name="q" class="form-control form-control-dark" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-
         </form>
-
         <div class="text-end">
             {% if user.is_authenticated %}
           <button type="button" class="btn btn-outline-light me-2" ><a class="login" href="{% url 'logout' %}">Logout</a></button>

@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('users.urls')),
     path('admin/', admin.site.urls),
     path('orders/', include('orders.urls')),
+    path('stock/', include('stockmgmt.urls')),
     url(r'^download/(?P<path>.*)$', serve,{'document_root':settings.MEDIA_ROOT}),
 ]
 
