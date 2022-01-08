@@ -40,7 +40,6 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'mptt',
-    'wkhtmltopdf',
     # 'whitenoise.runserver_nostatic',
 
     'users',

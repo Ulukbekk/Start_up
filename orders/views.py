@@ -4,7 +4,6 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, HttpResponse, Http404, FileResponse
 from django.shortcuts import render, redirect
-from django.template.loader import get_template
 from django.utils import dateformat
 from django.views.generic import FormView, DetailView
 
@@ -12,7 +11,6 @@ from core import settings
 from orders.forms import ManagerBlankForm, WorkerEditForm, OrderSearchForm, ManagerBlankFilesForm
 from orders.models import ManagerBlank, ManagerBlankFiles
 from users.models import Account, Client
-from warehouse.forms import MaterialSearchForm, AddMaterialForm
 from django.contrib import messages
 from time import gmtime, strftime
 from num2words import num2words
