@@ -11,10 +11,13 @@
 
 <div class="container-order-detail">
     <table class="table table-bordered">
-      {% for order in orders %}
+<!--      {% for url in new_urls %}-->
+<!--        <img src="{{url}}" width="150" height="150"/>-->
+<!--        {% endfor %}-->
+<!--      {% for order in orders %}-->
       <ul>
-        <li>Файлы:{{ order.files}}</li>
         <li>Название:{{ order.title }}</li>
+          <li><img src="{{ order.files.url }}" width="300" height="250"></li>
         <li>Описание:{{ order.description|wordwrap:5 }}</li>
         <li>Заказчик:{{ order.client }}</li>
         <li>Дедлайн:{{ order.deadline|date:"d.m.Y" }}</li>
@@ -24,6 +27,7 @@
         <br>
         {% if request.user == order.author %}
         <a id="edit" class="edit" href="{% url 'order_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
+        <a href="{% url 'invoice' order.id %}"><button class="btn btn-success" type="submit">Счет-фоктор</button></a>
         {% elif order.worker != 'Менеджер' %}
         <a href="{% url 'worker_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
         {% endif %}

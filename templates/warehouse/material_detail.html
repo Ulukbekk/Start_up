@@ -1,0 +1,34 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/order_detail.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+
+<div class="container-order-detail">
+    <table class="table table-bordered">
+      {% for material in materials %}
+      <ul>
+        <li>Категория:{{ material.category }}</li>
+        <li>Название:{{ material.title }}</li>
+        <li>Остаток:{{ material.remainder }}</li>
+        <li>Количество:{{ material.amount }}</li>
+        <li>Дата создания:{{ material.date_created|date:"d.m.Y - G:i" }}</li>
+        <li>Было добавлено:{{ material.receive_quantity }}</li>
+        <li>Добавил:{{ material.receive_by }}</li>
+        <li>Было использовано:{{ material.issue_quantity }}</li>
+        <li>Использовал:{{ material.issue_by }}</li>
+        <br>
+  <a href="{% url 'issue_items' material.id %}"><div class='btn btn-danger'>ISSUE THIS ITEM</div></a>
+    <a href="{% url 'receive_items' material.id %}"><div class='btn btn-primary'>RECEIVE THIS ITEM</div></a>
+      </ul>
+      {% endfor %}
+    </table>
+</div>
+
+
+{% endblock content %}

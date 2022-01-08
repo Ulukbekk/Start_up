@@ -18,14 +18,19 @@
 </form>
 </div>
 <div class="container col-8">
-
+  {% if messages %}
+        <ul class="messages">
+               {% for message in messages %}
+                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+               {% endfor %}
+       </ul>
+  {% endif %}
     <table class="table table-bordered">
   <thead class="table-dark">
     <tr>
         <th>№</th>
         <th>Название</th>
-        <th>Цвет</th>
-        <th>Оттенок</th>
+<!--        <th>Цвет</th>-->
         <th>Кол-во</th>
         <th>Остаток</th>
         <th>Дата</th>
@@ -35,9 +40,8 @@
   {% for material in materials %}
     <tr>
         <td>{{ material.id }}</td>
-        <td><a href="{% url 'update_material' material.id %}">{{ material.title }}</a></td>
-        <td>{{ material.color }}</td>
-        <td>{{ material.shade }}</td>
+        <td><a href="{% url 'material_detail' material.id %}">{{ material.title }}</a></td>
+<!--        <td>{{ material.color }}</td>-->
         <td>{{ material.amount }}</td>
         <td>{{ material.remainder }}</td>
         <td>{{ material.date_created|date:"d.m.Y - G:i" }}</td>
@@ -90,7 +94,15 @@
         {% endif %}
       </ul>
     </nav>
-
+    <style>
+.success{
+     list-style: none;
+     background-color: #27CA40;
+     color: white;
+     box-shadow: 12px 12px 12px #e16c66;
+     text-align: center;
+ }
+    </style>
 
 
 {% endblock content %}

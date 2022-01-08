@@ -15,8 +15,6 @@
                 {% csrf_token %}
                 <label>{{ form|crispy }}</label>
                 <br>
-                <a href="{% url 'add_category' %}"><p>Добавить новую категорию</p></a>
-                <br>
                 <button class="btn btn-success" type="submit">Добавить</button>
             </form>
         </div>

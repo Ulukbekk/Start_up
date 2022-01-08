@@ -1,0 +1,29 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/user_blank.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+<br>
+<div class="container-blank">
+    <div class="row">
+        <div class="col-lg-10">
+            <form enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <label>{{form|crispy}}</label>
+                <input type="file" multiple name="files" id="name" required/>
+                <br>
+                <br>
+                <button class="btn btn-success" type="submit" href="/">Добавить файл</button>
+                <br>
+                <div align="center">
+                    <h3 style="color: black">{{ new_urls }}</h3>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

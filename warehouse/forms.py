@@ -1,6 +1,6 @@
 from django import forms
 
-from warehouse.models import Material, Category
+from warehouse.models import Material
 
 
 class AddMaterialForm(forms.ModelForm):
@@ -11,8 +11,11 @@ class AddMaterialForm(forms.ModelForm):
             'title',
             'remainder',
             'amount',
-            'color',
-            'shade',
+            'receive_quantity',
+            'receive_by',
+            'issue_quantity',
+            'issue_by',
+            'issue_to',
         )
 
 
@@ -24,21 +27,31 @@ class UpdateMaterialForm(forms.ModelForm):
             'title',
             'remainder',
             'amount',
-            'color',
-            'shade',
+            # 'color',
         )
 
 
-class AddCategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = ('title',)
-
-
 class MaterialSearchForm(forms.ModelForm):
+    export_to_CSV = forms.BooleanField(required=False)
+
     class Meta:
         model = Material
         fields = (
              'category', 'title',
-            'color', 'shade'
         )
+
+
+class IssueForm(forms.ModelForm):
+    class Meta:
+        model = Material
+        fields = ('issue_quantity',
+                  'remainder',
+                  'issue_to')
+
+
+class ReceiveForm(forms.ModelForm):
+    class Meta:
+        model = Material
+        fields = ('receive_quantity',
+                  'remainder',
+                  'receive_by')

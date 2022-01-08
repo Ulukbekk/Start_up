@@ -9,6 +9,13 @@
 {% block content %}
 <div class="container">
     <div class="row">
+             {% if messages %}
+        <ul class="messages">
+               {% for message in messages %}
+                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+               {% endfor %}
+       </ul>
+  {% endif %}
         <div class="col-lg-4">
             <img src="{{ user.image.url }}">
         </div>
@@ -24,4 +31,13 @@
         </div>
     </div>
 </div>
+    <style>
+.success{
+     list-style: none;
+     background-color: #27CA40;
+     color: white;
+     box-shadow: 12px 12px 12px #e16c66;
+     text-align: center;
+ }
+    </style>
 {% endblock content %}

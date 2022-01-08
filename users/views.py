@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
@@ -10,6 +11,7 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Новый Пользователь Создан')
             return redirect('login')
     form = UserRegistrationForm()
     context = {
@@ -23,6 +25,7 @@ def add_client(request):
         form = AddClientForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Добавлен Новый Клиент')
             return redirect('home_page')
     form = AddClientForm()
     context = {
@@ -56,6 +59,7 @@ def profile(request):
         form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Данные о Пользователе Были Обнавлены')
     form = ProfileUpdateForm(instance=request.user)
     context = {
         'form': form
@@ -78,6 +82,7 @@ def client_edit(request, pk):
         form = AddClientForm(request.POST, request.FILES, instance=client)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Данные о Клиенте Были Обнавлены')
             return redirect('home_page')
     form = AddClientForm(instance=client)
     context = {
@@ -92,6 +97,7 @@ def change_password(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
+            messages.success(request, 'Пароль Успешно Изменен')
             update_session_auth_hash(request, user)  # Important!
             logout(request)
             return redirect('login')

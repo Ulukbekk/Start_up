@@ -12,12 +12,20 @@
 {% block content %}
 
 <br>
+
 <div class="container-filter">
     <form method='POST' action=''>{% csrf_token %}
     {{ order_form|crispy}}
         <input type="submit" value='Search'/>
 </form></div>
 <div class="container col-8">
+     {% if messages %}
+        <ul class="messages">
+               {% for message in messages %}
+                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+               {% endfor %}
+       </ul>
+  {% endif %}
     <table class="table table-bordered">
   <thead class="table-dark">
     <tr>
@@ -28,8 +36,9 @@
         <th>Статус</th>
         <th>Дата</th>
         <th>Состояние</th>
-        <th>Сечас на</th>
+        <th>Сейчас на</th>
         <th>Тип заказа</th>
+        <th>Цена</th>
         <th>Менеджер</th>
 
     </tr>
@@ -46,6 +55,7 @@
         <td>{{ order.condition }}</td>
         <td>{{ order.worker }}</td>
         <td>{{ order.order }}</td>
+        <td>{{ order.price }}</td>
         <td>{{ order.author }}</td>
 
     </tr>
@@ -98,6 +108,14 @@
       </ul>
     </nav>
 
-
+    <style>
+.success{
+     list-style: none;
+     background-color: #27CA40;
+     color: white;
+     box-shadow: 12px 12px 12px #e16c66;
+     text-align: center;
+ }
+    </style>
 
 {% endblock content %}

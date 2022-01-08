@@ -1,19 +1,43 @@
+import io
 import os
 from audioop import reverse
-
+import io as StringIO
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+from django.template import Context
+from django.http import HttpResponse
+from html import escape
+from django.contrib.auth import get_user_model
+from django.template import Context
+from datetime import datetime
+from django.shortcuts import render
+from easy_pdf.views import PDFTemplateView, PDFTemplateResponseMixin
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.views import View
+from xhtml2pdf import pisa
 from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse, Http404, FileResponse
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from django.views.generic import FormView
+from django.template.loader import get_template
+from django.utils import dateformat
+from django.views import View
+from django.views.generic import FormView, DetailView
 
 from core import settings
-from orders.forms import ManagerBlankForm, WorkerEditForm, OrderSearchForm
-from orders.models import ManagerBlank
+from orders.forms import ManagerBlankForm, WorkerEditForm, OrderSearchForm, ManagerBlankFilesForm
+from orders.models import ManagerBlank, ManagerBlankFiles
 from users.models import Account, Client
-from warehouse.forms import MaterialSearchForm
+from warehouse.forms import MaterialSearchForm, AddMaterialForm
+from django.contrib import messages
+from time import gmtime, strftime
+from num2words import num2words
+
+from warehouse.models import Material
 
 
 def home_page(request):
@@ -24,7 +48,7 @@ def home_page(request):
     position = request.user.position
     manage = Account.objects.filter(position='Менеджер')
     order_form = OrderSearchForm(request.POST or None)
-    if str(position) == 'Менеджер' :
+    if str(position) == 'Менеджер' or 'Админ':
         orders = ManagerBlank.objects.filter().order_by('-date_created')
     else:
         orders = ManagerBlank.objects.filter(worker=position).order_by('-date_created')
@@ -97,20 +121,38 @@ def home_page(request):
 
 def add_order(request):
     if request.method == 'POST':
-        my_file = request.FILES.getlist('uploadfiles')
         form = ManagerBlankForm(request.POST, request.FILES)
-        for f in my_file:
-            ManagerBlank(files=f).save()
         if form.is_valid():
             order = form.save(commit=False)
             order.author = request.user
             order.save()
+            messages.success(request, 'Заказ Добавлен')
             return redirect('home_page')
     form = ManagerBlankForm()
     context = {
         'form': form
     }
     return render(request, 'orders/add_order.html', context)
+
+
+def add_files(request):
+    if request.method == 'POST':
+        form = ManagerBlankFilesForm(request.POST or None)
+        files = request.FILES.getlist('files')
+        file_list = []
+        for f in files:
+            new_file = ManagerBlankFiles(
+                files=f
+            )
+            new_file.save()
+            file_list.append(new_file.files.url)
+        if form.is_valid():
+            form.save()
+        form = ManagerBlankFilesForm
+        return render(request, 'orders/add_files.html', {'new_urls': file_list,
+                                                         'form': form})
+    else:
+        return render(request, 'orders/add_files.html')
 
 
 # def files(request):
@@ -185,6 +227,7 @@ def order_edit(request, pk):
         form = ManagerBlankForm(request.POST, request.FILES, instance=order)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Изменения Сохранены')
             return redirect('home_page')
     form = ManagerBlankForm(instance=order)
     context = {
@@ -199,7 +242,57 @@ def worker_edit(request, pk):
     if request.method == 'POST':
         form = WorkerEditForm(request.POST, request.FILES, instance=orders)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            if Material.objects.filter(title=instance.wasted_material_one):
+                material = Material.objects.filter(title=instance.wasted_material_one)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_one
+                    i.save()
+                instance.save()
+            if Material.objects.filter(title=instance.wasted_material_two):
+                material = Material.objects.filter(title=instance.wasted_material_two)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_two
+                    i.save()
+                instance.save()
+            if Material.objects.filter(title=instance.wasted_material_three):
+                material = Material.objects.filter(title=instance.wasted_material_three)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_three
+                    i.save()
+                instance.save()
+            if Material.objects.filter(title=instance.wasted_material_four):
+                material = Material.objects.filter(title=instance.wasted_material_four)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_four
+                    i.save()
+                instance.save()
+            if Material.objects.filter(title=instance.wasted_material_five):
+                material = Material.objects.filter(title=instance.wasted_material_five)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_five
+                    i.save()
+                instance.save()
+            if Material.objects.filter(title=instance.wasted_material_six):
+                material = Material.objects.filter(title=instance.wasted_material_six)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_six
+                    i.save()
+                instance.save()
+            if Material.objects.filter(title=instance.wasted_material_seven):
+                material = Material.objects.filter(title=instance.wasted_material_seven)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_seven
+                    i.save()
+                instance.save()
+            if Material.objects.filter(title=instance.wasted_material_eight):
+                material = Material.objects.filter(title=instance.wasted_material_eight)
+                for i in material:
+                    i.amount -= instance.amount_wasted_material_eight
+                    i.save()
+                instance.save()
+            instance.save()
+            messages.success(request, 'Изменения Сохранены')
             return redirect('home_page')
     # if request.user.position != 'Менеджер':
     #     orders.design = True
@@ -241,3 +334,50 @@ def search(request):
     orders = ManagerBlank.objects.filter(title__icontains=query)
     return render(request, 'orders/home.html',
                   context={'orders': orders})
+
+
+def fetch_pdf_resources(uri, rel):
+    if uri.find(settings.MEDIA_URL) != -1:
+        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
+    elif uri.find(settings.STATIC_URL) != -1:
+        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ''))
+    else:
+        path = None
+    return path
+
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result, link_callback=fetch_pdf_resources, encoding='UTF-8')
+    # pdf = pisa.CreatePDF(BytesIO(html.encode("CP-866")), result,  encoding='UTF-8')
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+
+def invoice(request, pk):
+    orders = ManagerBlank.objects.filter(id=pk)
+    showtime = strftime('%d/%m', gmtime())
+    you_date = dateformat.format(datetime.now(), settings.DATE_FORMAT)
+    for i in orders:
+        price = str(i.price)
+        word_price = num2words(price[:-3], lang='ru')
+
+    context = {
+        "orders": orders,
+        'date': showtime,
+        'mont': you_date,
+        'price': word_price.capitalize()
+    }
+    # return render_to_pdf('invoice/invoice.html', context)
+    return render(request, 'invoice/invoice.html', context)
+
+
+class PDFUserDetailView(PDFTemplateResponseMixin, DetailView):
+    model = get_user_model()
+    template_name = 'invoice/invoice.html'
+
+
