@@ -1,31 +1,11 @@
-import io
 import os
-from audioop import reverse
-import io as StringIO
-from xhtml2pdf import pisa
-from django.template.loader import get_template
-from django.template import Context
-from django.http import HttpResponse
-from html import escape
 from django.contrib.auth import get_user_model
-from django.template import Context
 from datetime import datetime
-from django.shortcuts import render
-from easy_pdf.views import PDFTemplateView, PDFTemplateResponseMixin
-from io import BytesIO
-from django.http import HttpResponse
-from django.template.loader import get_template
-from django.views import View
-from xhtml2pdf import pisa
-from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
-from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse, Http404, FileResponse
 from django.shortcuts import render, redirect
-from django.template import RequestContext
 from django.template.loader import get_template
 from django.utils import dateformat
-from django.views import View
 from django.views.generic import FormView, DetailView
 
 from core import settings
@@ -336,28 +316,6 @@ def search(request):
                   context={'orders': orders})
 
 
-def fetch_pdf_resources(uri, rel):
-    if uri.find(settings.MEDIA_URL) != -1:
-        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
-    elif uri.find(settings.STATIC_URL) != -1:
-        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ''))
-    else:
-        path = None
-    return path
-
-
-def render_to_pdf(template_src, context_dict={}):
-    template = get_template(template_src)
-    html = template.render(context_dict)
-    result = BytesIO()
-
-    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result, link_callback=fetch_pdf_resources, encoding='UTF-8')
-    # pdf = pisa.CreatePDF(BytesIO(html.encode("CP-866")), result,  encoding='UTF-8')
-    if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
-    return None
-
-
 def invoice(request, pk):
     orders = ManagerBlank.objects.filter(id=pk)
     showtime = strftime('%d/%m', gmtime())
@@ -374,10 +332,5 @@ def invoice(request, pk):
     }
     # return render_to_pdf('invoice/invoice.html', context)
     return render(request, 'invoice/invoice.html', context)
-
-
-class PDFUserDetailView(PDFTemplateResponseMixin, DetailView):
-    model = get_user_model()
-    template_name = 'invoice/invoice.html'
 
 
