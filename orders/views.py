@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, HttpResponse, Http404, FileResponse
 from django.shortcuts import render, redirect
 from django.utils import dateformat
+from django.contrib.auth.decorators import login_required
 from django.views.generic import FormView, DetailView
 
 from core import settings
@@ -18,15 +19,17 @@ from num2words import num2words
 from warehouse.models import Material
 
 
+@login_required
 def home_page(request):
-    # s_status = Status.objects.all().distinct()
-    # s_type_order = Order.objects.all().distinct()
-    # s_worker = Worker.objects.all().distinct()
-    # s_condition = Condition.objects.all().distinct()
     position = request.user.position
     manage = Account.objects.filter(position='Менеджер')
+    ceh_print = Account.objects.filter(position='Цех и Печать')
+    purveyor = Account.objects.filter(position='Поставщик')
     order_form = OrderSearchForm(request.POST or None)
-    if str(position) == 'Менеджер' or 'Админ':
+    print(request.user)
+    if str(position) == 'Менеджер':
+        orders = ManagerBlank.objects.filter().order_by('-date_created')
+    elif request.user.is_superuser:
         orders = ManagerBlank.objects.filter().order_by('-date_created')
     else:
         orders = ManagerBlank.objects.filter(worker=position).order_by('-date_created')
@@ -37,7 +40,6 @@ def home_page(request):
             condition__icontains=order_form['condition'].value(),
             worker__icontains=order_form['worker'].value(),
             order__icontains=order_form['order'].value(),
-            # deadline__icontains=order_form['deadline'].value()
         )
 
     paginator = Paginator(orders, 20)
@@ -46,57 +48,16 @@ def home_page(request):
 
     context = {
         'orders': page_obj,
-        # 's_type_order': s_type_order,
-        # 's_status': s_status,
-        # 's_worker': s_worker,
-        # 's_condition': s_condition,
         'position': position,
         'manage': manage,
+        'purveyor': purveyor,
+        'ceh_print': ceh_print,
         'order_form': order_form
     }
     return render(request, 'orders/home.html', context)
 
 
-# def status_sort(request, pk):
-#     status = Status.objects.filter(id=pk).first()
-#     status_orders = ManagerBlank.objects.filter(status=status).order_by('-date_created')
-#     context = {
-#         'status_orders': status_orders,
-#     }
-#
-#     return render(request, 'orders/sort.html', context)
-#
-#
-# def worker_sort(request, pk):
-#     worker = Worker.objects.filter(id=pk).first()
-#     worker_orders = ManagerBlank.objects.filter(worker=worker).order_by('-date_created')
-#     context = {
-#         'worker_orders': worker_orders,
-#     }
-#
-#     return render(request, 'orders/sort.html', context)
-#
-#
-# def condition_sort(request, pk):
-#     condition = Condition.objects.filter(id=pk).first()
-#     condition_orders = ManagerBlank.objects.filter(condition=condition).order_by('-date_created')
-#     context = {
-#         'condition_orders': condition_orders,
-#     }
-#
-#     return render(request, 'orders/sort.html', context)
-#
-#
-# def order_sort(request, pk):
-#     order = Order.objects.filter(id=pk).first()
-#     type_orders = ManagerBlank.objects.filter(order=order).order_by('-date_created')
-#     context = {
-#         'type_orders': type_orders,
-#     }
-#
-#     return render(request, 'orders/sort.html', context)
-
-
+@login_required
 def add_order(request):
     if request.method == 'POST':
         form = ManagerBlankForm(request.POST, request.FILES)
@@ -113,6 +74,7 @@ def add_order(request):
     return render(request, 'orders/add_order.html', context)
 
 
+@login_required
 def add_files(request):
     if request.method == 'POST':
         form = ManagerBlankFilesForm(request.POST or None)
@@ -179,6 +141,7 @@ def add_files(request):
 #     return render(request, 'orders/add_order.html', context)
 
 
+@login_required
 def order_detail(request, pk):
     order = ManagerBlank.objects.filter(id=pk)
     context = {
@@ -188,6 +151,7 @@ def order_detail(request, pk):
                   context)
 
 
+@login_required
 def worker_detail(request, pk):
     order = ManagerBlank.objects.filter(id=pk)
     context = {
@@ -197,6 +161,7 @@ def worker_detail(request, pk):
                   context)
 
 
+@login_required
 def order_edit(request, pk):
     order = ManagerBlank.objects.filter(id=pk).first()
     if request.user != order.author:
@@ -215,6 +180,7 @@ def order_edit(request, pk):
     return render(request, 'orders/order_edit.html', context)
 
 
+@login_required
 def worker_edit(request, pk):
     orders = ManagerBlank.objects.filter(id=pk).first()
     if request.method == 'POST':
@@ -297,6 +263,7 @@ def worker_edit(request, pk):
 #     return render(request, 'orders/worker_edit.html', context)
 
 
+@login_required
 def download(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):
@@ -307,6 +274,7 @@ def download(request, path):
     raise Http404
 
 
+@login_required
 def search(request):
     query = request.GET.get('q')
     orders = ManagerBlank.objects.filter(title__icontains=query)
@@ -314,6 +282,7 @@ def search(request):
                   context={'orders': orders})
 
 
+@login_required
 def invoice(request, pk):
     orders = ManagerBlank.objects.filter(id=pk)
     showtime = strftime('%d/%m', gmtime())

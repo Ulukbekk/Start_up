@@ -1,11 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from users.forms import UserRegistrationForm, AddClientForm, ProfileUpdateForm, SearchClientForm
 from users.models import Account, Client
 
 
+@login_required
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -20,6 +22,7 @@ def register(request):
     return render(request, 'users/register.html', context)
 
 
+@login_required
 def add_client(request):
     if request.method == 'POST':
         form = AddClientForm(request.POST)
@@ -34,6 +37,7 @@ def add_client(request):
     return render(request, 'users/add_client.html', context)
 
 
+@login_required
 def list_clients(request):
     clients = Client.objects.all()
     form = SearchClientForm(request.POST or None)
@@ -54,6 +58,7 @@ def list_clients(request):
     return render(request, 'users/clients.html', context)
 
 
+@login_required
 def profile(request):
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
@@ -67,6 +72,7 @@ def profile(request):
     return render(request, 'users/profile.html', context)
 
 
+@login_required
 def client_detail(request, pk):
     client = Client.objects.filter(id=pk)
     context = {
@@ -76,6 +82,7 @@ def client_detail(request, pk):
                   context)
 
 
+@login_required
 def client_edit(request, pk):
     client = Client.objects.filter(id=pk).first()
     if request.method == 'POST':
@@ -92,6 +99,7 @@ def client_edit(request, pk):
     return render(request, 'users/client_edit.html', context)
 
 
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)

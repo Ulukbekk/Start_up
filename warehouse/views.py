@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -7,6 +8,7 @@ from warehouse.forms import AddMaterialForm, MaterialSearchForm, UpdateMaterialF
 from warehouse.models import Material
 
 
+@login_required
 def all_materials(request):
     materials = Material.objects.all()
     form = MaterialSearchForm(request.POST or None)
@@ -27,6 +29,7 @@ def all_materials(request):
     return render(request, 'warehouse/all_material.html', context)
 
 
+@login_required
 def add_material(request):
     if request.method == 'POST':
         form = AddMaterialForm(request.POST)
@@ -42,6 +45,7 @@ def add_material(request):
     return render(request, 'warehouse/add_material.html', context)
 
 
+@login_required
 def material_detail(request, pk):
     material = Material.objects.filter(id=pk)
     context = {
@@ -51,6 +55,7 @@ def material_detail(request, pk):
                   context)
 
 
+@login_required
 def update_material(request, pk):
     materials = Material.objects.filter(id=pk).first()
     form = UpdateMaterialForm(instance=materials)
@@ -68,6 +73,7 @@ def update_material(request, pk):
     return render(request, 'warehouse/update_material.html', context)
 
 
+@login_required
 def issue_items(request, pk):
     queryset = Material.objects.get(id=pk)
     form = IssueForm(request.POST or None, instance=queryset)
@@ -91,6 +97,7 @@ def issue_items(request, pk):
     return render(request, "warehouse/add_material.html", context)
 
 
+@login_required
 def receive_items(request, pk):
     queryset = Material.objects.get(id=pk)
     form = ReceiveForm(request.POST or None, instance=queryset)

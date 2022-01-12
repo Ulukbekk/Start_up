@@ -36,18 +36,24 @@
             <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">{{ user.username }}</a></li>
             <li><a href="{% url 'home_page' %}" class="nav-link px-2 text-secondary">Home</a></li>
-            {% if user.position == 'Менеджер' %}
+            {% endif %}
+            {% if user == manage or ceh_print %}
             <li><a href="{% url 'list_clients' %}" class="nav-link px-2 text-white">Список клиентов</a></li>
             <li><a href="{% url 'add_client' %}" class="nav-link px-2 text-white">Новый Клиент</a></li>
            <li><a href="{% url 'add_order' %}" class="nav-link px-2 text-white">Добавить Заказ</a></li>
             {% endif %}
+            {% if user == purveyor %}
            <li><a href="{% url 'add_material' %}" class="nav-link px-2 text-white">Добавить Материал</a></li>
            <li><a href="{% url 'all_materials' %}" class="nav-link px-2 text-white">Учет Материалов</a></li>
             <li><a href="{% url 'add_files' %}" class="nav-link px-2 text-white">Добавить Файлы</a></li>
-<!--           <li><a href="{% url 'stock' %}" class="nav-link px-2 text-white">Stock</a></li>-->
-<!--           <li><a href="{% url 'list_items' %}" class="nav-link px-2 text-white">List items</a></li>-->
-<!--           <li><a href="{% url 'add_items' %}" class="nav-link px-2 text-white">Add items</a></li>-->
-
+            {% endif %}
+            {% if user.is_superuser %}
+            <li><a href="{% url 'list_clients' %}" class="nav-link px-2 text-white">Список клиентов</a></li>
+            <li><a href="{% url 'add_client' %}" class="nav-link px-2 text-white">Новый Клиент</a></li>
+           <li><a href="{% url 'add_order' %}" class="nav-link px-2 text-white">Добавить Заказ</a></li>
+           <li><a href="{% url 'add_material' %}" class="nav-link px-2 text-white">Добавить Материал</a></li>
+           <li><a href="{% url 'all_materials' %}" class="nav-link px-2 text-white">Учет Материалов</a></li>
+            <li><a href="{% url 'add_files' %}" class="nav-link px-2 text-white">Добавить Файлы</a></li>
             {% endif %}
         </ul>
         <div class="text-end">
