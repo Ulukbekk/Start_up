@@ -25,7 +25,7 @@
         <li>Дата создания:{{ order.date_created|date:"d.m.Y - G:i" }}</li>
         <li>Состояние:{{ order.condition }}</li>
         <br>
-        {% if request.user == order.author %}
+        {% if request.user == 'Менеджер' %}
         <a id="edit" class="edit" href="{% url 'order_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
         <a href="{% url 'invoice' order.id %}"><button class="btn btn-success" type="submit">Счет-фоктор</button></a>
         {% elif order.worker != 'Менеджер' %}
@@ -33,7 +33,6 @@
         {% endif %}
           {% if user.is_superuser %}
         <a id="edit" class="edit" href="{% url 'order_edit' order.id %}"><button class="btn btn-success" type="submit">Измения Менеджера</button></a>
-        <a href="{% url 'worker_edit' order.id %}"><button class="btn btn-success" type="submit">Измения Цеха</button></a>
         <a href="{% url 'invoice' order.id %}"><button class="btn btn-success" type="submit">Счет-фоктор</button></a>
           <br>
         {% endif %}
