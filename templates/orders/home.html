@@ -38,7 +38,9 @@
         <th>Состояние</th>
         <th>Сейчас на</th>
         <th>Тип заказа</th>
+        {% if user.is_superuser or manage %}
         <th>Цена</th>
+        {% endif %}
         <th>Менеджер</th>
 
     </tr>
@@ -55,7 +57,9 @@
         <td>{{ order.condition }}</td>
         <td>{{ order.worker }}</td>
         <td>{{ order.order }}</td>
+        {% if user.is_superuser or manage %}
         <td>{{ order.price }}</td>
+        {% endif %}
         <td>{{ order.author }}</td>
 
     </tr>

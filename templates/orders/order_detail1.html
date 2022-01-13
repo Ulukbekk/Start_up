@@ -31,6 +31,12 @@
         {% elif order.worker != 'Менеджер' %}
         <a href="{% url 'worker_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
         {% endif %}
+          {% if user.is_superuser %}
+        <a id="edit" class="edit" href="{% url 'order_edit' order.id %}"><button class="btn btn-success" type="submit">Измения Менеджера</button></a>
+        <a href="{% url 'worker_edit' order.id %}"><button class="btn btn-success" type="submit">Измения Цеха</button></a>
+        <a href="{% url 'invoice' order.id %}"><button class="btn btn-success" type="submit">Счет-фоктор</button></a>
+          <br>
+        {% endif %}
         <a  href="{{ MEDIA_URL }}{{ order.files.url }}" download="{{ order.files.url }}"><button class="btn btn-success" type="submit">Скачать файл</button></a>
       </ul>
       {% endfor %}

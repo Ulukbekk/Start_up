@@ -11,11 +11,6 @@ class AddMaterialForm(forms.ModelForm):
             'title',
             'remainder',
             'amount',
-            'receive_quantity',
-            'receive_by',
-            'issue_quantity',
-            'issue_by',
-            'issue_to',
         )
 
 
@@ -45,13 +40,11 @@ class IssueForm(forms.ModelForm):
     class Meta:
         model = Material
         fields = ('issue_quantity',
-                  'remainder',
-                  'issue_to')
+                  'remainder')
 
 
 class ReceiveForm(forms.ModelForm):
     class Meta:
         model = Material
         fields = ('receive_quantity',
-                  'remainder',
-                  'receive_by')
+                  'remainder')

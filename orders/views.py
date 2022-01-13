@@ -34,13 +34,23 @@ def home_page(request):
     else:
         orders = ManagerBlank.objects.filter(worker=position).order_by('-date_created')
     if request.method == 'POST':
-        orders = ManagerBlank.objects.filter(
-            title__icontains=order_form['title'].value(),
-            status__icontains=order_form['status'].value(),
-            condition__icontains=order_form['condition'].value(),
-            worker__icontains=order_form['worker'].value(),
-            order__icontains=order_form['order'].value(),
-        )
+        if request.user.position == manage or request.user.is_superuser:
+            orders = ManagerBlank.objects.filter(
+                title__icontains=order_form['title'].value(),
+                status__icontains=order_form['status'].value(),
+                condition__icontains=order_form['condition'].value(),
+                worker__icontains=order_form['worker'].value(),
+                order__icontains=order_form['order'].value(),
+            )
+        elif request.user.position != manage:
+            orders = ManagerBlank.objects.filter(
+                title__icontains=order_form['title'].value(),
+                status__icontains=order_form['status'].value(),
+                condition__icontains=order_form['condition'].value(),
+                worker__icontains=order_form['worker'].value(),
+                order__icontains=order_form['order'].value(),
+                worker=position
+            )
 
     paginator = Paginator(orders, 20)
     page_number = request.GET.get('page')
@@ -191,48 +201,72 @@ def worker_edit(request, pk):
                 material = Material.objects.filter(title=instance.wasted_material_one)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_one
+                    if i.amount < instance.amount_wasted_material_one:
+                        messages.success(request, 'На складе материала меньше от затраченого 1')
+                        break
                     i.save()
                 instance.save()
             if Material.objects.filter(title=instance.wasted_material_two):
                 material = Material.objects.filter(title=instance.wasted_material_two)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_two
+                    if i.amount < instance.amount_wasted_material_two:
+                        messages.error(request, 'На складе материала меньше от затраченого 2')
+                        break
                     i.save()
                 instance.save()
             if Material.objects.filter(title=instance.wasted_material_three):
                 material = Material.objects.filter(title=instance.wasted_material_three)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_three
+                    if i.amount < instance.amount_wasted_material_three:
+                        messages.success(request, 'На складе материала меньше от затраченого 3')
+                        break
                     i.save()
                 instance.save()
             if Material.objects.filter(title=instance.wasted_material_four):
                 material = Material.objects.filter(title=instance.wasted_material_four)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_four
+                    if i.amount < instance.amount_wasted_material_four:
+                        messages.success(request, 'На складе материала меньше от затраченого 4')
+                        break
                     i.save()
                 instance.save()
             if Material.objects.filter(title=instance.wasted_material_five):
                 material = Material.objects.filter(title=instance.wasted_material_five)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_five
+                    if i.amount < instance.amount_wasted_material_five:
+                        messages.success(request, 'На складе материала меньше от затраченого 5')
+                        break
                     i.save()
                 instance.save()
             if Material.objects.filter(title=instance.wasted_material_six):
                 material = Material.objects.filter(title=instance.wasted_material_six)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_six
+                    if i.amount < instance.amount_wasted_material_six:
+                        messages.success(request, 'На складе материала меньше от затраченого 6')
+                        break
                     i.save()
                 instance.save()
             if Material.objects.filter(title=instance.wasted_material_seven):
                 material = Material.objects.filter(title=instance.wasted_material_seven)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_seven
+                    if i.amount < instance.amount_wasted_material_seven:
+                        messages.success(request, 'На складе материала меньше от затраченого 7')
+                        break
                     i.save()
                 instance.save()
             if Material.objects.filter(title=instance.wasted_material_eight):
                 material = Material.objects.filter(title=instance.wasted_material_eight)
                 for i in material:
                     i.amount -= instance.amount_wasted_material_eight
+                    if i.amount < instance.amount_wasted_material_eight:
+                        messages.success(request, 'На складе материала меньше от затраченого 8')
+                        break
                     i.save()
                 instance.save()
             instance.save()
