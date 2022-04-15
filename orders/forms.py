@@ -14,7 +14,7 @@ class ManagerBlankForm(forms.ModelForm):
 
     class Meta:
         model = ManagerBlank
-        fields = (
+        fields = [
             'title',
             'description',
             'deadline',
@@ -25,18 +25,10 @@ class ManagerBlankForm(forms.ModelForm):
             'order',
             'condition',
             'worker',
-        )
+        ]
         widgets = {'deadline': forms.DateInput(attrs={'id': 'davaToday', 'type': 'date'}),
                     # 'files': forms.ClearableFileInput(attrs={'class': 'upload ', 'inputtype': 'file', 'name': 'files', 'multiple': True}),
                    }
-
-
-    # def clean_client(self):
-    #     client = self.cleaned_data['client']
-    #
-    #     if str(client) == None:
-    #         raise ValidationError('Вы не выбрали клиента')
-    #     return client
 
 
 class WorkerEditForm(forms.ModelForm):

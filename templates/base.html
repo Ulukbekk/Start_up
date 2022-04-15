@@ -40,7 +40,6 @@
             {% if user == manage or ceh_print %}
             <li><a href="{% url 'list_clients' %}" class="nav-link px-2 text-white">Список клиентов</a></li>
             <li><a href="{% url 'add_client' %}" class="nav-link px-2 text-white">Новый Клиент</a></li>
-           <li><a href="{% url 'add_order' %}" class="nav-link px-2 text-white">Добавить Заказ</a></li>
             {% endif %}
             {% if user == purveyor %}
            <li><a href="{% url 'add_material' %}" class="nav-link px-2 text-white">Добавить Материал</a></li>
@@ -50,7 +49,6 @@
             {% if user.is_superuser %}
             <li><a href="{% url 'list_clients' %}" class="nav-link px-2 text-white">Список клиентов</a></li>
             <li><a href="{% url 'add_client' %}" class="nav-link px-2 text-white">Новый Клиент</a></li>
-           <li><a href="{% url 'add_order' %}" class="nav-link px-2 text-white">Добавить Заказ</a></li>
            <li><a href="{% url 'add_material' %}" class="nav-link px-2 text-white">Добавить Материал</a></li>
            <li><a href="{% url 'all_materials' %}" class="nav-link px-2 text-white">Учет Материалов</a></li>
             <li><a href="{% url 'add_files' %}" class="nav-link px-2 text-white">Добавить Файлы</a></li>

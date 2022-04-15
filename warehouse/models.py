@@ -27,7 +27,7 @@ class Material(models.Model):
         ('Другое', 'Другое'),
     )
     category = models.CharField(max_length=50, blank=True, null=True, choices=category_choice, verbose_name='Категория')
-    title = models.CharField(default=' ', max_length=100, blank=True, null=True)
+    title = models.CharField(default=' ', max_length=100, blank=True, null=True, unique=True)
     remainder = models.FloatField(default=0, verbose_name='Остаток')
     amount = models.IntegerField(default=0, verbose_name='Количество')
     receive_quantity = models.IntegerField(default='0', blank=True, null=True, verbose_name='Добавить материал')

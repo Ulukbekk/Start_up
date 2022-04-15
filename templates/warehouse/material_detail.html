@@ -23,8 +23,8 @@
         <li>Было использовано:{{ material.issue_quantity }}</li>
         <li>Использовал:{{ material.issue_by }}</li>
         <br>
-  <a href="{% url 'issue_items' material.id %}"><div class='btn btn-danger'>ISSUE THIS ITEM</div></a>
-    <a href="{% url 'receive_items' material.id %}"><div class='btn btn-primary'>RECEIVE THIS ITEM</div></a>
+  <a href="{% url 'issue_items' material.id %}"><div class='btn btn-danger'>Изьять материал</div></a>
+    <a href="{% url 'receive_items' material.id %}"><div class='btn btn-primary'>Добавить материал</div></a>
       </ul>
       {% endfor %}
     </table>

@@ -6,11 +6,11 @@ from django.conf.urls import url
 from django.views.static import serve
 
 urlpatterns = [
-    path('warehouse/', include('warehouse.urls')),
-    path('', include('users.urls')),
+    path('', include('orders.urls')),
     path('admin/', admin.site.urls),
-    path('orders/', include('orders.urls')),
+    path('users/', include('users.urls')),
     path('stock/', include('stockmgmt.urls')),
+    path('warehouse/', include('warehouse.urls')),
     url(r'^download/(?P<path>.*)$', serve,{'document_root':settings.MEDIA_ROOT}),
 
 ]

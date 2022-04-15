@@ -11,7 +11,7 @@ urlpatterns = [
     path('client-edit/<int:pk>/', client_edit, name='client_edit'),
     path('list-clients/', list_clients, name='list_clients'),
     path('profile/', profile, name='profile'),
-    path('', LoginView.as_view(
+    path('login/', LoginView.as_view(
         template_name='users/login.html'
     ), name='login'),
     path('logout/', LogoutView.as_view(

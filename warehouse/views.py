@@ -17,10 +17,7 @@ def all_materials(request):
     page_obj = paginator.get_page(page_number)
     if request.method == 'POST':
         page_obj = Material.objects.filter(category__icontains=form['category'].value(),
-                                           title__icontains=form['title'].value(
-        ),
-            # color__icontains=form['color'].value(),
-        )
+                                           title__icontains=form['title'].value()).order_by('-date_created')
 
     context = {
         'form': form,
@@ -81,11 +78,11 @@ def issue_items(request, pk):
         instance = form.save(commit=False)
         instance.amount -= instance.issue_quantity
         instance.issue_by = str(request.user)
-        messages.success(request, "Issued SUCCESSFULLY. " + str(instance.amount) +
-                         " " + str(instance.title) + "s now left in Store")
+        messages.success(request, " Изьято " + str(instance.issue_quantity) +
+                         "материла с " + str(instance.title))
         instance.save()
 
-        return redirect('/warehouse/material-detail/'+str(instance.id))
+        return redirect('/warehouse/all-materials/')
         # return HttpResponseRedirect(instance.get_absolute_url())
 
     context = {
@@ -105,10 +102,10 @@ def receive_items(request, pk):
         instance = form.save(commit=False)
         instance.amount += instance.receive_quantity
         instance.save()
-        messages.success(request, "Received SUCCESSFULLY. " +
-                         str(instance.amount) + " " + str(instance.title)+"s now in Store")
+        messages.success(request, "Добавлено " +
+                         str(instance.receive_quantity) + "материла к " + str(instance.title))
 
-        return redirect('/warehouse/material-detail/'+str(instance.id))
+        return redirect('/warehouse/all-materials/')
         # return HttpResponseRedirect(instance.get_absolute_url())
     context = {
         "title": 'Reaceive ' + str(queryset.title),

@@ -34,6 +34,14 @@ def home_page(request):
     else:
         orders = ManagerBlank.objects.filter(worker=position).order_by('-date_created')
     if request.method == 'POST':
+        form_blank = ManagerBlankForm(request.POST, request.FILES)
+        if form_blank.is_valid():
+            order = form_blank.save(commit=False)
+            order.author = request.user
+            order.save()
+            messages.success(request, 'Заказ Добавлен')
+            return redirect('home_page')
+
         if request.user.position == manage or request.user.is_superuser:
             orders = ManagerBlank.objects.filter(
                 title__icontains=order_form['title'].value(),
@@ -41,7 +49,8 @@ def home_page(request):
                 condition__icontains=order_form['condition'].value(),
                 worker__icontains=order_form['worker'].value(),
                 order__icontains=order_form['order'].value(),
-            )
+            ).order_by('-date_created')
+
         elif request.user.position != manage:
             orders = ManagerBlank.objects.filter(
                 title__icontains=order_form['title'].value(),
@@ -50,8 +59,8 @@ def home_page(request):
                 worker__icontains=order_form['worker'].value(),
                 order__icontains=order_form['order'].value(),
                 worker=position
-            )
-
+            ).order_by('-date_created')
+    form_blank = ManagerBlankForm()
     paginator = Paginator(orders, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -62,26 +71,10 @@ def home_page(request):
         'manage': manage,
         'purveyor': purveyor,
         'ceh_print': ceh_print,
-        'order_form': order_form
+        'order_form': order_form,
+        'form_blank': form_blank
     }
     return render(request, 'orders/home.html', context)
-
-
-@login_required
-def add_order(request):
-    if request.method == 'POST':
-        form = ManagerBlankForm(request.POST, request.FILES)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.author = request.user
-            order.save()
-            messages.success(request, 'Заказ Добавлен')
-            return redirect('home_page')
-    form = ManagerBlankForm()
-    context = {
-        'form': form
-    }
-    return render(request, 'orders/add_order.html', context)
 
 
 @login_required
@@ -162,6 +155,16 @@ def order_detail(request, pk):
 
 
 @login_required
+def wasted_material(request, pk):
+    order = ManagerBlank.objects.filter(id=pk)
+    context = {
+        'order': order,
+    }
+    return render(request, 'orders/wasted_material.html',
+                  context)
+
+
+@login_required
 def worker_detail(request, pk):
     order = ManagerBlank.objects.filter(id=pk)
     context = {
@@ -193,6 +196,30 @@ def order_edit(request, pk):
 @login_required
 def worker_edit(request, pk):
     orders = ManagerBlank.objects.filter(id=pk).first()
+    wasted_tuple = [
+    orders.save_title_wasted_material_one, orders.save_amount_wasted_material_one,orders.save_remainder_wasted_material_one,
+    orders.save_title_wasted_material_two,orders.save_amount_wasted_material_two ,orders.save_remainder_wasted_material_two,
+    orders.save_title_wasted_material_three,orders.save_amount_wasted_material_three ,orders.save_remainder_wasted_material_three,
+    orders.save_title_wasted_material_four, orders.save_amount_wasted_material_four, orders.save_remainder_wasted_material_four,
+    orders.save_title_wasted_material_five, orders.save_amount_wasted_material_five, orders.save_remainder_wasted_material_five,
+    orders.save_title_wasted_material_six, orders.save_amount_wasted_material_six, orders.save_remainder_wasted_material_six,
+    orders.save_title_wasted_material_seven, orders.save_amount_wasted_material_seven, orders.save_remainder_wasted_material_seven,
+    orders.save_title_wasted_material_eight, orders.save_amount_wasted_material_eight, orders.save_remainder_wasted_material_eight,
+    orders.save_title_wasted_material_nine, orders.save_amount_wasted_material_nine, orders.save_remainder_wasted_material_nine,
+    orders.save_title_wasted_material_ten, orders.save_amount_wasted_material_ten, orders.save_remainder_wasted_material_ten,
+    orders.save_title_wasted_material_eleven, orders.save_amount_wasted_material_eleven, orders.save_remainder_wasted_material_eleven,
+    orders.save_title_wasted_material_twelve, orders.save_amount_wasted_material_twelve, orders.save_remainder_wasted_material_twelve,
+    orders.save_title_wasted_material_thirteen, orders.save_amount_wasted_material_thirteen, orders.save_remainder_wasted_material_thirteen,
+    orders.save_title_wasted_material_fourteen, orders.save_amount_wasted_material_fourteen, orders.save_remainder_wasted_material_fourteen,
+    orders.save_title_wasted_material_fifteen, orders.save_amount_wasted_material_fifteen, orders.save_remainder_wasted_material_fifteen,
+    orders.save_title_wasted_material_sixteen, orders.save_amount_wasted_material_sixteen, orders.save_remainder_wasted_material_sixteen,
+    orders.save_title_wasted_material_seventeen, orders.save_amount_wasted_material_seventeen, orders.save_remainder_wasted_material_seventeen,
+    orders.save_title_wasted_material_eighteen, orders.save_amount_wasted_material_eighteen, orders.save_remainder_wasted_material_eighteen,
+    orders.save_title_wasted_material_nineteen, orders.save_amount_wasted_material_nineteen, orders.save_remainder_wasted_material_nineteen,
+    orders.save_title_wasted_material_twenty, orders.save_amount_wasted_material_twenty, orders.save_remainder_wasted_material_twenty,
+    ]
+    # for i in wasted_tuple[0::3]:
+    #     print(i)
     if request.method == 'POST':
         form = WorkerEditForm(request.POST, request.FILES, instance=orders)
         if form.is_valid():

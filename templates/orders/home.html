@@ -11,13 +11,36 @@
 
 {% block content %}
 
-<br>
+<style>
+    .container-filter{
+    margin-left: 80%;
+    }
+    .container-blank{
+    height: 0px;
+    width: 400px;
+    margin-left: 4%;
+    margin-top: 1%;
+    }
+</style>
+
+{% if user.position == manage or user.is_superuser %}
+<div class="container-blank">
+            <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label>{{ form_blank|crispy }}</label>
+                <br>
+                <br>
+                <button class="btn btn-success" type="submit">Добавить заказ</button>
+            </form>
+</div>
+{% endif %}
 
 <div class="container-filter">
     <form method='POST' action=''>{% csrf_token %}
     {{ order_form|crispy}}
         <input type="submit" value='Search'/>
-</form></div>
+</form>
+</div>
 <div class="container col-8">
      {% if messages %}
         <ul class="messages">

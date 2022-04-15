@@ -24,16 +24,19 @@
         <li>Статус:{{ order.status }}</li>
         <li>Дата создания:{{ order.date_created|date:"d.m.Y - G:i" }}</li>
         <li>Состояние:{{ order.condition }}</li>
+
+
         <br>
         {% if request.user == 'Менеджер' %}
         <a id="edit" class="edit" href="{% url 'order_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
         <a href="{% url 'invoice' order.id %}"><button class="btn btn-success" type="submit">Счет-фоктор</button></a>
-        {% elif order.worker != 'Менеджер' %}
+        {% elif order.worker != 'Менеджер' or user.is_superuser %}
         <a href="{% url 'worker_edit' order.id %}"><button class="btn btn-success" type="submit">Изменить</button></a>
         {% endif %}
           {% if user.is_superuser %}
         <a id="edit" class="edit" href="{% url 'order_edit' order.id %}"><button class="btn btn-success" type="submit">Измения Менеджера</button></a>
         <a href="{% url 'invoice' order.id %}"><button class="btn btn-success" type="submit">Счет-фоктор</button></a>
+        <a href="{% url 'wasted_material' order.id %}"><button class="btn btn-success" type="submit">Затраченый Материал</button></a>
           <br>
         {% endif %}
         <a  href="{{ MEDIA_URL }}{{ order.files.url }}" download="{{ order.files.url }}"><button class="btn btn-success" type="submit">Скачать файл</button></a>

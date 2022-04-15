@@ -1,0 +1,128 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+
+{% for order in order %}
+<div class="container">
+    <h3>{{ order.title }}</h3>
+        <table class="table table-bordered">
+          <thead class="table-dark">
+    <tr bgcolor="black">
+        <th>Наменование</th>
+        <th>Количество</th>
+        <th>Остаток</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>{{ order.save_title_wasted_material_one }}</td>
+        <td>{{ order.save_amount_wasted_material_one }}</td>
+        <td>{{ order.save_remainder_wasted_material_one }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_two }}</td>
+        <td>{{ order.save_amount_wasted_material_two }}</td>
+        <td>{{ order.save_remainder_wasted_material_two }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_three }}</td>
+        <td>{{ order.save_amount_wasted_material_three }}</td>
+        <td>{{ order.save_remainder_wasted_material_three }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_four }}</td>
+        <td>{{ order.save_amount_wasted_material_four }}</td>
+        <td>{{ order.save_remainder_wasted_material_four }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_five }}</td>
+        <td>{{ order.save_amount_wasted_material_five }}</td>
+        <td>{{ order.save_remainder_wasted_material_five }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_six }}</td>
+        <td>{{ order.save_amount_wasted_material_six }}</td>
+        <td>{{ order.save_remainder_wasted_material_six }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_seven }}</td>
+        <td>{{ order.save_amount_wasted_material_seven }}</td>
+        <td>{{ order.save_remainder_wasted_material_seven }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_eight }}</td>
+        <td>{{ order.save_amount_wasted_material_eight}}</td>
+        <td>{{ order.save_remainder_wasted_material_eight }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_nine }}</td>
+        <td>{{ order.save_amount_wasted_material_nine}}</td>
+        <td>{{ order.save_remainder_wasted_material_nine }}</td>
+    </tr><tr>
+        <td>{{ order.save_title_wasted_material_ten }}</td>
+        <td>{{ order.save_amount_wasted_material_ten}}</td>
+        <td>{{ order.save_remainder_wasted_material_ten}}</td>
+    </tr><tr>
+        <td>{{ order.save_title_wasted_material_eleven }}</td>
+        <td>{{ order.save_amount_wasted_material_eleven }}</td>
+        <td>{{ order.save_remainder_wasted_material_eleven}}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_twelve}}</td>
+        <td>{{ order.save_amount_wasted_material_twelve}}</td>
+        <td>{{ order.save_remainder_wasted_material_twelve }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_thirteen }}</td>
+        <td>{{ order.save_amount_wasted_material_thirteen }}</td>
+        <td>{{ order.save_remainder_wasted_material_thirteen }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_fourteen}}</td>
+        <td>{{ order.save_amount_wasted_material_fourteen }}</td>
+        <td>{{ order.save_remainder_wasted_material_fourteen }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_fifteen }}</td>
+        <td>{{ order.save_amount_wasted_material_fifteen }}</td>
+        <td>{{ order.save_remainder_wasted_material_fifteen}}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_sixteen }}</td>
+        <td>{{ order.save_amount_wasted_material_sixteen }}</td>
+        <td>{{ order.save_remainder_wasted_material_sixteen }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_seventeen }}</td>
+        <td>{{ order.save_amount_wasted_material_seventeen }}</td>
+        <td>{{ order.save_remainder_wasted_material_seventeen }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_eighteen }}</td>
+        <td>{{ order.save_amount_wasted_material_eighteen }}</td>
+        <td>{{ order.save_remainder_wasted_material_eighteen }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_nineteen }}</td>
+        <td>{{ order.save_amount_wasted_material_nineteen }}</td>
+        <td>{{ order.save_remainder_wasted_material_nineteen }}</td>
+    </tr>
+  <tr>
+        <td>{{ order.save_title_wasted_material_twenty }}</td>
+        <td>{{ order.save_amount_wasted_material_twenty }}</td>
+        <td>{{ order.save_remainder_wasted_material_twenty }}</td>
+    </tr>
+
+  </tbody>
+        </table>
+</div>
+{% endfor %}
+
+
+{% endblock content %}
